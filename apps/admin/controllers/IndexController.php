@@ -72,6 +72,46 @@ class IndexController extends Controller
         $this->view->motorbikesForm = $motorbikesForm;
     }
     
+
+    public function editAction($id)
+    {
+        $this->view->errorMessage = null;
+        $motorbikesModel = Motorbikes::findFirst($id);
+        $motorbikesForm = new MotorbikesForm($motorbikesModel, array(
+            'edit' => true
+        ));
+    
+        // 'forms' is a service which is registered as a form manager
+        // We can register for inside form manager in order to access from any file
+        // $this->forms->set('MotorbikesForm', $motorbikesForm);
+    
+        if ($this->request->isPost()) {
+            if ($motorbikesForm->isValid($this->request->getPost(), $motorbikesModel)) {
+                if ($this->security->checkToken('csrf')) {
+                    $success = $motorbikesModel->save();
+                    if ($success) {
+                        $message = 'Last Edited ID: ' . $motorbikesModel->id; // edited id
+                        $this->flashSession->success($message);
+                        return $this->response->redirect('admin/index/index');
+                    } else {
+                        foreach ($motorbikesModel->getMessages() as $message) {
+                            // get last error
+                            $this->view->errorMessage = $message->getMessage();
+                        }
+                    }
+                } else {
+                    $this->view->errorMessage = 'Token invalid!';
+                }
+            } else {
+                foreach ($motorbikesForm->getMessages() as $message) {
+                    // get last error
+                    $this->view->errorMessage = $message;
+                }
+            }
+        }
+        $this->view->motorbikesForm = $motorbikesForm;
+    }
+    
     public function deleteAction($id)
     { 
         if ($this->security->checkToken('csrf', $this->request->getQuery('token'))) {
