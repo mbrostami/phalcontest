@@ -1,22 +1,33 @@
 <div class="row">
     <div class="col-md-6">
-        <p>{{ flashSession.output() }}</p>
-        {% if motorbikes %}
+        <p>{{ flashSession.output() }}</p> 
+       
+        {% if motorbikes.items %}
             <table class="table">
                 <tr>
+                    <th>#</th>
                     <th>ID</th>
                     <th>Name</th>
-                </tr>  
-                {% for motorbike in motorbikes %}
+                </tr> 
+                {% set i = 0 %} 
+                {% for motorbike in motorbikes.items %}
+                    {% set i += 1 %}
                     <tr>
+                        <td>{{i}}</td>
                         <td>{{motorbike.id}}</td>
                         <td>{{motorbike.name}}</td>
                     </tr>
                 {% endfor %} 
             </table>
         {% endif %}
+        <a href="{{ url("admin/index/index") }}">First</a>
+        <a href="{{ url("admin/index/index") }}?page={{ motorbikes.before }}">Previous</a>
+        <a href="{{ url("admin/index/index") }}?page={{ motorbikes.next }}">Next</a>
+        <a href="{{ url("admin/index/index") }}?page={{ motorbikes.last }}">Last</a>
+       
+        You are in page {{ motorbikes.current }} of {{ motorbikes.total_pages }} - total items :  {{ motorbikes.total_items }}
     </div>
     <div class="col-md-6">
-        {{link_to('/admin/index/add', 'Add New Record')}}
+        {{link_to(url("admin/index/add"), 'Add New Record')}}
     </div>
 </div>

@@ -1,21 +1,23 @@
 <div class="row">
-    {{ errorMessage }}
     <div class="col-md-6">
-    {{ form('admin/index/add', 'method': 'post') }}
-        <fieldset>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <div>
-                    {{ text_field('name', 'class': 'form-control') }}
+        {% if errorMessage %}
+            <p><div class="alert alert-danger">{{ errorMessage }}</div></p>
+        {% endif %}
+        {{ form('admin/index/add', 'method': 'post') }}
+            <fieldset>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div>
+                        {{ text_field('name', 'class': 'form-control') }}
+                    </div>
+                </div> 
+                <div class="form-group">
+                    {{ submit_button('Submit', 'class': 'btn btn-primary') }}
                 </div>
-            </div> 
-            <div class="form-group">
-                {{ submit_button('Submit', 'class': 'btn btn-primary') }}
-            </div>
-        </fieldset>
-    </form>
+            </fieldset>
+        </form>
     </div>
     <div class="col-md-6"> 
-        {{link_to('/admin/index/index', 'List')}}
+        {{link_to(url('admin/index/index'), 'List')}}
     </div>
 </div>

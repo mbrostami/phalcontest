@@ -1,12 +1,22 @@
 <?php
 use Phalcon\Mvc\Controller;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class IndexController extends Controller
 {
 
     public function indexAction()
     {  
-        $this->view->motorbikes = Motorbikes::find(array(null, "order" => "id desc"));
+        $motorbikes = Motorbikes::find(array(null, "order" => "id desc"));
+        $currentPage = $this->request->getQuery('page', 'int', 1); // GET 
+        $paginator   = new PaginatorModel(
+            array(
+                "data"  => $motorbikes,
+                "limit" => 10,
+                "page"  => $currentPage
+            )
+        );
+        $this->view->motorbikes = $paginator->getPaginate();
     }
     
     public function addAction()
