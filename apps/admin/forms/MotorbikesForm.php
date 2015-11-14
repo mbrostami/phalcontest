@@ -17,8 +17,8 @@ class MotorbikesForm extends Form
      */
     public function getCsrf()
     {
-        return md5(rand() . time() . rand());
-    }
+        return $this->security->getToken();
+    } 
     
     /**
      * Initialize the form
@@ -50,7 +50,7 @@ class MotorbikesForm extends Form
         $this->add($name); 
         
         
-        // Add a text element to put a hidden CSRF
+        // Add a text element to put a hidden CSRF 
         $this->add(new Hidden("csrf"));
     }
 }

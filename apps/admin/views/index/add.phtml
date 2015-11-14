@@ -4,6 +4,7 @@
             <p><div class="alert alert-danger">{{ errorMessage }}</div></p>
         {% endif %}
         {{ form('admin/index/add', 'method': 'post') }}
+        {{ motorbikesForm.render('csrf') }}
             <fieldset>
                 <div class="form-group">
                     <label for="name">Name</label>

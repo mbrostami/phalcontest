@@ -27,6 +27,8 @@ try {
         '../routes/'
     ))->register();
      
+    
+    
     $iniConfig = new Ini('../configs/config.ini');
     $di->set('router', function () use ($iniConfig) {
         
@@ -101,6 +103,7 @@ try {
     });
     
     $application = new Application($di);
+    
     // Register the installed modules
     $modules = array();
     if ($iniConfig->modules) {

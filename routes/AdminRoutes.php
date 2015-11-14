@@ -29,6 +29,14 @@ class AdminRoutes extends RouterGroup
                 'action'     => 2
             )
         );
+        $this->add(
+            "/:controller/:action/:int",
+            array(
+                'controller' => 1,
+                'action'     => 2,
+                'id'         => 3
+            )
+        );
         // Add a route to the group
         $this->add(
             '/indexex',

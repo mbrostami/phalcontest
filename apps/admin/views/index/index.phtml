@@ -8,14 +8,16 @@
                     <th>#</th>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Action</th>
                 </tr> 
-                {% set i = 0 %} 
+                {% set i = 0, token = security.getToken() %} 
                 {% for motorbike in motorbikes.items %}
                     {% set i += 1 %}
                     <tr>
                         <td>{{i}}</td>
                         <td>{{motorbike.id}}</td>
                         <td>{{motorbike.name}}</td>
+                        <td><a href="{{ url("admin/index/delete/" ~ motorbike.id) ~ "?token=" ~ token }}" >Delete</a></td>
                     </tr>
                 {% endfor %} 
             </table>
