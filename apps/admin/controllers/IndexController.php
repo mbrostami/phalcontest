@@ -65,7 +65,7 @@ class IndexController extends Controller
             } else {
                 foreach ($motorbikesForm->getMessages() as $message) {
                     // get last error
-                    $this->view->errorMessage = $message;
+                    $this->view->errorMessage = $message->getMessage();
                 }
             }
         }
@@ -105,7 +105,7 @@ class IndexController extends Controller
             } else {
                 foreach ($motorbikesForm->getMessages() as $message) {
                     // get last error
-                    $this->view->errorMessage = $message;
+                    $this->view->errorMessage = $message->getMessage();
                 }
             }
         }
@@ -119,7 +119,7 @@ class IndexController extends Controller
                 if ($motorbikesModel->delete() == false) {
                     foreach ($motorbikesModel->getMessages() as $message) {
                         // get first error message
-                        $this->flashSession->error($message);
+                        $this->flashSession->error($message->getMessage());
                         break;
                     }
                 } else {

@@ -102,7 +102,6 @@ try {
         return $flash;
     });
     
-    $application = new Application($di);
     
     // Register the installed modules
     $modules = array();
@@ -112,6 +111,8 @@ try {
             $modules[$moduleName]['path'] = "../apps/$moduleName/Module.php";
         }
     }
+
+    $application = new Application($di);
     $application->registerModules($modules);
     echo $application->handle()->getContent();
 } catch (Exception $e) {

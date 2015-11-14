@@ -1,12 +1,12 @@
 <?php
-namespace Apps\Admin;
+namespace Apps\Api;
 
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\DiInterface;
 use Phalcon\Loader; 
-use Phalcon\Mvc\Router;
+use Phalcon\Mvc\Router; 
 
 class Module implements ModuleDefinitionInterface
 {
@@ -19,18 +19,16 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
         $loader->registerNamespaces(array(
             __NAMESPACE__ . '\Controllers' => __DIR__ . '/controllers/',
-            __NAMESPACE__ . '\Models' => __DIR__ . '/models/',
-            __NAMESPACE__ . '\Models' => __DIR__ . '/forms/'
+            'Apps\Admin\Models' => '../apps/admin/models/',
+            'Apps\Admin\Forms' => '../apps/admin/forms/',
         ));
         
         $loader->registerDirs( array(
             __DIR__ . '/controllers/',
-            __DIR__ . '/models/',
-            __DIR__ . '/forms/'
+            '../apps/admin/models/',
+            '../apps/admin/forms/'
         ));
-        $loader->register(); 
-        
-        
+        $loader->register();  
     }
 
     /**
@@ -41,12 +39,7 @@ class Module implements ModuleDefinitionInterface
         // Registering the view component
         $di->set('view', function () {
             $view = new View();
-            $view->setViewsDir(__DIR__ . '/views/');
-            $view->registerEngines(
-                array(
-                    ".phtml" => 'Phalcon\Mvc\View\Engine\Volt'
-                )
-            );
+            $view->setRenderLevel(View::LEVEL_NO_RENDER); 
             return $view;
         });
     }
