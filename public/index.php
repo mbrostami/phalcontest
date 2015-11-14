@@ -7,6 +7,10 @@ use Phalcon\DI\FactoryDefault;
 use Phalcon\Mvc\Router;
 use Phalcon\Config\Adapter\Ini;
 use Phalcon\Loader;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Flash\Direct as FlashDirect;
+use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Session\Adapter\Files as SessionAdapter;
 
 try {
     define('APP_PATH', realpath('..') . '/');
@@ -50,6 +54,43 @@ try {
             "password" => $iniConfig->database->password,
             "dbname" => $iniConfig->database->dbname
         ));
+    });
+    
+
+    /**
+     * Start the session the first time some component request the session service
+     */
+    $di->set('session', function () {
+        $session = new SessionAdapter();
+        $session->start();
+        return $session;
+    });
+    
+
+    // Register the flash service with custom CSS classes
+    $di->set('flashSession', function () {
+        $flash = new FlashSession(
+            array(
+                'error'   => 'alert alert-danger',
+                'success' => 'alert alert-success',
+                'notice'  => 'alert alert-info',
+                'warning' => 'alert alert-warning'
+            )
+        );
+        return $flash;
+    });
+    
+    // Register the flash service with custom CSS classes
+    $di->set('flash', function () {
+        $flash = new FlashDirect(
+            array(
+                'error'   => 'alert alert-danger',
+                'success' => 'alert alert-success',
+                'notice'  => 'alert alert-info',
+                'warning' => 'alert alert-warning'
+            )
+        ); 
+        return $flash;
     });
     
     $application = new Application($di);

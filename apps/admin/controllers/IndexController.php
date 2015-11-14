@@ -5,19 +5,29 @@ class IndexController extends Controller
 {
 
     public function indexAction()
-    { 
-        $motorbikesModel = new Motorbikes(); 
-        // $motorbikesModel->name = 'test';
-        $success = $motorbikesModel->save();
-        if ($success) {
-            var_dump($motorbikesModel->id); // last inserted id
-        } else { 
-            foreach ($motorbikesModel->getMessages() as $message) {
-                echo $message->getMessage(), "<br/>";
+    {  
+        $this->view->motorbikes = Motorbikes::find(array(null, "order" => "id desc"));
+    }
+    
+    public function addAction()
+    {
+        $this->view->errorMessage = null;
+        if ($this->request->isPost()) {
+            $name = $this->request->getPost('name');
+            $motorbikesModel = new Motorbikes();
+            $motorbikesModel->name = $name;
+            $success = $motorbikesModel->save(); 
+            if ($success) {
+                $message = 'Last Inserted ID: ' . $motorbikesModel->id; // last inserted id
+                $this->flashSession->success($message);
+                return $this->response->redirect('admin/index/index');
+            } else {
+                foreach ($motorbikesModel->getMessages() as $message) {
+                    $message = $message->getMessage();
+                }
+                $this->view->errorMessage = $message;
             }
         }
-        echo "<h1>Hello!</h1>";
-        $this->view->disable();
     }
     
     public function testAction()
