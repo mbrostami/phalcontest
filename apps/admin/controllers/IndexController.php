@@ -21,24 +21,32 @@ class IndexController extends Controller
     
     public function addAction()
     {
-        $this->view->errorMessage = null; 
-        $this->forms->set('simpleForm', new SimpleForm()); 
+        $this->view->errorMessage = null;  
+        $motorbikesModel = new Motorbikes();
+        $motorbikesForm = new MotorbikesForm($motorbikesModel);
+        // 'forms' is a service which is registered as a form manager
+        // $this->forms->set('MotorbikesForm', $motorbikesForm); 
+        
         if ($this->request->isPost()) {
-            $name = $this->request->getPost('name');
-            $motorbikesModel = new Motorbikes();
-            $motorbikesModel->name = $name;
-            $success = $motorbikesModel->save(); 
-            if ($success) {
-                $message = 'Last Inserted ID: ' . $motorbikesModel->id; // last inserted id
-                $this->flashSession->success($message);
-                return $this->response->redirect('admin/index/index');
-            } else {
-                foreach ($motorbikesModel->getMessages() as $message) {
-                    $message = $message->getMessage();
+            if ($motorbikesForm->isValid($this->request->getPost(), $motorbikesModel)) {
+                $success = $motorbikesModel->save(); 
+                if ($success) {
+                    $message = 'Last Inserted ID: ' . $motorbikesModel->id; // last inserted id
+                    $this->flashSession->success($message);
+                    return $this->response->redirect('admin/index/index');
+                } else {
+                    foreach ($motorbikesModel->getMessages() as $message) {
+                        $message = $message->getMessage();
+                    }
+                    $this->view->errorMessage = $message;
                 }
-                $this->view->errorMessage = $message;
+            } else {
+                foreach ($motorbikesForm->getMessages() as $message) {
+                    $this->view->errorMessage = $message;
+                }
             }
         }
+        $this->view->motorbikesForm = $motorbikesForm;
     }
     
     public function deleteAction()

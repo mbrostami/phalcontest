@@ -8,20 +8,14 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <div>
-                        {{ forms.get('simpleForm').render('name') }}
+                        {{ motorbikesForm.render('name') }}
                     </div>
-                </div> 
-                <div class="form-group">
-                    <label for="name">Select Box </label>
-                    <div>
-                        {{ forms.get('simpleForm').render('product_types_id') }}
-                    </div>
-                </div> 
+                </div>  
                 <div class="form-group">
                     {{ submit_button('Submit', 'class': 'btn btn-primary') }}
                 </div>
             </fieldset>
-        </form>
+        {{ endForm() }}
     </div>
     <div class="col-md-6"> 
         {{link_to(url('admin/index/index'), 'List')}}

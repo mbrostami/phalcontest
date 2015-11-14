@@ -7,20 +7,26 @@ use Phalcon\Forms\Element\Select;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\Numericality;
+use Phalcon\Validation\Validator\StringLength;
 
-class SimpleForm extends Form
+class MotorbikesForm extends Form
 {
 
     /**
-     * Initialize the products form
+     * This method returns the default value for field 'csrf'
+     */
+    public function getCsrf()
+    {
+        return md5(rand() . time() . rand());
+    }
+    
+    /**
+     * Initialize the form
      */
     public function initialize($entity = null, $options = array())
     {
 
-        if (!isset($options['edit'])) {
-            $element = new Text("id");
-            $this->add($element->setLabel("Id"));
-        } else {
+        if (isset($options['edit'])) {
             $this->add(new Hidden("id"));
         }
 
@@ -29,27 +35,22 @@ class SimpleForm extends Form
         $name->setFilters(array('striptags', 'string'));
         $name->setAttributes(array(
             'class' => 'form-control'
-        ));
+        )); 
         $name->addValidators(array(
             new PresenceOf(array(
                 'message' => 'Name is required'
-            ))
+            )),
+            new StringLength(
+                array(
+                    'min'            => 3,
+                    'messageMinimum' => 'The name is too short'
+                )
+            )
         ));
-        $this->add($name);
-
-        $type = new Select('product_types_id', array(
-            '1' => 'Test',
-            '2' => 'Test 2'
-        ), array(
-            'using'      => array('id', 'name'),
-            'useEmpty'   => true,
-            'emptyText'  => '...',
-            'emptyValue' => ''
-        ));
-        $type->setAttributes(array(
-            'class' => 'form-control'
-        ));
-        $type->setLabel('Type');
-        $this->add($type); 
+        $this->add($name); 
+        
+        
+        // Add a text element to put a hidden CSRF
+        $this->add(new Hidden("csrf"));
     }
 }
