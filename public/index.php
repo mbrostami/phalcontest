@@ -11,6 +11,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Forms\Manager as FormsManager;
 
 try {
     define('APP_PATH', realpath('..') . '/');
@@ -44,6 +45,12 @@ try {
         }
         return $router;
     });
+    
+    // add new service as form manager
+    $di->set('forms', function () {
+        return new FormsManager();
+    });
+    
     
     // Setup the database service
     $di->set('db', function () use ($iniConfig) {

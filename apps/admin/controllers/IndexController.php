@@ -21,7 +21,8 @@ class IndexController extends Controller
     
     public function addAction()
     {
-        $this->view->errorMessage = null;
+        $this->view->errorMessage = null; 
+        $this->forms->set('simpleForm', new SimpleForm()); 
         if ($this->request->isPost()) {
             $name = $this->request->getPost('name');
             $motorbikesModel = new Motorbikes();
@@ -40,6 +41,11 @@ class IndexController extends Controller
         }
     }
     
+    public function deleteAction()
+    {
+        
+    }
+       
     public function testAction()
     {
         echo "<h1>Test Action!</h1>";

@@ -20,12 +20,14 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
         $loader->registerNamespaces(array(
             __NAMESPACE__ . '\Controllers' => __DIR__ . '/controllers/',
-            __NAMESPACE__ . '\Models' => __DIR__ . '/models/'
+            __NAMESPACE__ . '\Models' => __DIR__ . '/models/',
+            __NAMESPACE__ . '\Models' => __DIR__ . '/forms/'
         ));
         
         $loader->registerDirs( array(
             __DIR__ . '/controllers/',
-            __DIR__ . '/models/'
+            __DIR__ . '/models/',
+            __DIR__ . '/forms/'
         ));
         $loader->register(); 
         
